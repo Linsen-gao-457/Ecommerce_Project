@@ -3,6 +3,7 @@ package com.ecommerce.sportscenter.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Builder;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.sportscenter.entity.Brand;
@@ -13,10 +14,10 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
-public class BrandServiceImlp implements BrandService {
+public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
 
-    public BrandServiceImlp(BrandRepository brandRepository){
+    public BrandServiceImpl(BrandRepository brandRepository){
         this.brandRepository = brandRepository;
     }
 

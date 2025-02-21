@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Type")
+@Table(name="product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,5 +32,5 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductTypeId", referencedColumnName = "Id")
-    private Brand type;
+    private Type type;
 }
