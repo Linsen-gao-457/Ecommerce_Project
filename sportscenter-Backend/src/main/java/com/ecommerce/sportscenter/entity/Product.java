@@ -1,5 +1,6 @@
 package com.ecommerce.sportscenter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +29,11 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductBrandId", referencedColumnName = "Id")
+    @JsonIgnore
     private Brand brand;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductTypeId", referencedColumnName = "Id")
+    @JsonIgnore
     private Type type;
 }

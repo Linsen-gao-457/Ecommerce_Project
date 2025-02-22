@@ -3,6 +3,9 @@ package com.ecommerce.sportscenter.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.sportscenter.entity.Product;
@@ -32,11 +35,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
+    public Page<ProductResponse> getAllProducts(Pageable pageable, Integer brandId, Integer typeId, String keyword) {
+        Specification<Product> spec = Specification.where(null);
+        if (brandId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("brand"), brandId));
+        }
+        if (typeId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("type"), typeId));
+        }
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + keyword + "%"));
+        }
+
+        Page<Product> products = productRepository.findAll(spec, pageable);
         log.info("Fetch all products");
-        List<ProductResponse> productResponses = products.stream()
-                            .map(this::convertToProductResponse).collect(Collectors.toList());
+        Page<ProductResponse> productResponses = products.map(this::convertToProductResponse);
         log.info("Fetched all products");
         return productResponses; 
     }
