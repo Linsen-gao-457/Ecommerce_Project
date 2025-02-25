@@ -48,15 +48,8 @@ export default function ProductCard({product}: Props){
           </Typography>
         </CardContent>
         <CardActions>
-        <LoadingButton
-          loading={loading}
-          onClick={addItem}
-          size="small"
-          startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
-        >
-          Add to cart
-        </LoadingButton> 
-          <Button component={Link} to={`/store/${product.id}`} size="small">View</Button>
+            <Button size="small">Add to cart</Button>
+            <Button size="small">View</Button>
         </CardActions>
         </Card>
     )
