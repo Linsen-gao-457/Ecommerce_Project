@@ -17,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
 
+    // dependency injection here
     public BrandServiceImpl(BrandRepository brandRepository){
         this.brandRepository = brandRepository;
     }
