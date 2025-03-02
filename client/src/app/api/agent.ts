@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { router } from "../router/Routes";
 
 
-axios.defaults.baseURL ='https://localhost:8081/api/';
+axios.defaults.baseURL ='http://localhost:8081/api/';
 
 const idle = () => new Promise(resolve => setTimeout(resolve, 100));
 const responseBody = (response: AxiosResponse) => response.data;
