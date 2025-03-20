@@ -3,6 +3,7 @@ package com.ecommerce.sportscenter.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ecommerce.sportscenter.exceptions.ProductNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Integer productId) {
         log.info("fetching Product by Id: {}", productId);
         Product product = productRepository.findById(productId)
-                            .orElseThrow(()->new RuntimeException("Product doesn't exist"));
+                .orElseThrow(()->new ProductNotFoundException("Product doesn't exist"));
 
         ProductResponse productResponse = convertToProductResponse(product);
         log.info("Fetched Product by Product Id: {}", productId);

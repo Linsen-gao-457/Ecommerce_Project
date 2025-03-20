@@ -1,9 +1,11 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFoundError";
+import Spinner from "../../app/layout/Spinner";
 
 export default function ProductDetails(){
     const {id} = useParams<{id:string}>();
@@ -26,16 +28,17 @@ export default function ProductDetails(){
         }).format(price);
       }
     useEffect(()=>{
-        id && agent.Store.details(parseInt(id)) 
+       id && agent.Store.details(parseInt(id)) 
         .then(response=>setProduct(response))
         .catch(error=>console.error(error))
         .finally(()=>setLoading(false));
     }, [id])
-    if(loading) return <h3>Loading Product...</h3>
+    if(loading) return <Spinner message='Loading Product...'/>
     if(!product) return <NotFound/>
     return(
         <Grid container spacing={6}>
-        <Grid item xs={6}>            <img src={"/images/products/"+extractImageName(product)} alt={product.name} style={{width: '100%'}}/>
+        <Grid item xs={6}>
+            <img src={"/images/products/"+extractImageName(product)} alt={product.name} style={{width: '100%'}}/>
         </Grid>
         <Grid item xs={6}>
             <Typography variant='h3'>{product.name}</Typography>
