@@ -1,19 +1,13 @@
 package com.ecommerce.sportscenter.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.ecommerce.sportscenter.exceptions.ProductNotFoundException;
+import com.ecommerce.sportscenter.entity.Product;
+import com.ecommerce.sportscenter.model.ProductResponse;
+import com.ecommerce.sportscenter.repository.ProductRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import com.ecommerce.sportscenter.entity.Product;
-import com.ecommerce.sportscenter.model.ProductResponse;
-import com.ecommerce.sportscenter.repository.ProductRepository;
-
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
@@ -28,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Integer productId) {
         log.info("fetching Product by Id: {}", productId);
         Product product = productRepository.findById(productId)
-                .orElseThrow(()->new ProductNotFoundException("Product doesn't exist"));
+                .orElseThrow(()->new RuntimeException("Product doesn't exist"));
 
         ProductResponse productResponse = convertToProductResponse(product);
         log.info("Fetched Product by Product Id: {}", productId);
@@ -39,10 +33,10 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponse> getAllProducts(Pageable pageable, Integer brandId, Integer typeId, String keyword) {
         Specification<Product> spec = Specification.where(null);
         if (brandId != null) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("brand"), brandId));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("brand").get("id"), brandId));
         }
         if (typeId != null) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("type"), typeId));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("type").get("id"), typeId));
         }
         if (keyword != null && !keyword.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + keyword + "%"));

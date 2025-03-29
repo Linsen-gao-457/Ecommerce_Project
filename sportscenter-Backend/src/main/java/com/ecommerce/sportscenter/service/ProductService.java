@@ -1,7 +1,5 @@
 package com.ecommerce.sportscenter.service;
 
-import java.util.List;
-
 import com.ecommerce.sportscenter.model.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
