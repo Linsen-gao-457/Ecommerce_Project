@@ -10,7 +10,7 @@ public interface BasketService {
 
     BasketResponse getBasketById(Integer id);
 
-    void deleteBasket(Integer id);
+    void deleteBasketById(Integer id);
 
     BasketResponse addBasket(Basket basket);
 }

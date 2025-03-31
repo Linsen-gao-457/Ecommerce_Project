@@ -66,7 +66,7 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public void deleteBasket(Integer id) {
+    public void deleteBasketById(Integer id) {
         basketRepository.deleteById(id);
 
     }
