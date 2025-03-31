@@ -1,13 +1,5 @@
 package com.ecommerce.sportscenter.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.ecommerce.sportscenter.entity.OrderAggregate.Order;
 import com.ecommerce.sportscenter.entity.OrderAggregate.OrderItem;
 import com.ecommerce.sportscenter.entity.OrderAggregate.ProductItemOrdered;
@@ -17,22 +9,27 @@ import com.ecommerce.sportscenter.model.BasketResponse;
 import com.ecommerce.sportscenter.model.OrderDto;
 import com.ecommerce.sportscenter.model.OrderResponse;
 import com.ecommerce.sportscenter.repository.OrderRepository;
-
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
-    private final BasketService basketService;
-    
+    @Autowired
+    private OrderRepository orderRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper, BasketService basketService){
-        this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
-        this.basketService = basketService;
-    }
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private BasketService basketService;
 
 
     @Override
@@ -76,7 +73,9 @@ public class OrderServiceImpl implements OrderService {
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
         //set order details
+        
         Order order = orderMapper.orderDtoToOrder(orderDto);
+
         order.setOrderItems(orderItems);
         order.setSubTotal(subTotal);
 
