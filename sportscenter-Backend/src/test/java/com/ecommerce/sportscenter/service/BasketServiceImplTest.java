@@ -82,7 +82,7 @@ class BasketServiceImplTest {
         // Test for deleteBasket()
         doNothing().when(basketRepository).deleteById(1); // Simulate the repository method with String ID
 
-        basketService.deleteBasket(1); // Use String ID
+        basketService.deleteBasketById(1); // Use String ID
 
         verify(basketRepository, times(1)).deleteById(1); // Verify if the repository method was called once
     }

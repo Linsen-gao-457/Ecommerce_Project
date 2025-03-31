@@ -34,7 +34,7 @@ public class BasketController {
     @DeleteMapping("/{basketId}")
     public void deleteBasket(@PathVariable String basketId) {
         Integer id = Integer.parseInt(basketId);
-        basketService.deleteBasket(id);
+        basketService.deleteBasketById(id);
     }
 
     @PostMapping

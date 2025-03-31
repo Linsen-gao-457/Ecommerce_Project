@@ -81,7 +81,7 @@ class BasketControllerTest {
 
     @Test
     void testDeleteBasket() throws Exception {
-        doNothing().when(basketService).deleteBasket(1);
+        doNothing().when(basketService).deleteBasketById(1);
 
         mockMvc.perform(delete("/api/baskets/1"))
                 .andExpect(status().isOk());
