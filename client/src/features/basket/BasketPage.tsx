@@ -16,7 +16,7 @@ import { Product } from "../../app/models/product";
 import { Add, Remove } from "@mui/icons-material";
 
 export default function BasketPage() {
-  const { basket } = useAppSelector((state) => state.basket);
+  const { basket } = useAppSelector(state => state.basket);
   const dispatch = useAppDispatch();
   const { Basket: BasketActions } = agent;
   const removeItem = (productId: number) => {
