@@ -28,6 +28,7 @@ public class BasketController {
     @GetMapping("/{basketId}")
     public BasketResponse getBasket(@PathVariable String basketId) {
         Integer id = Integer.parseInt(basketId);
+        System.out.println(basketService.getBasketById(id));
         return basketService.getBasketById(id);
     }
 
@@ -60,13 +61,13 @@ public class BasketController {
     private BasketItem convertToBasketItemEntity(BasketItemResponse basketItemResponse) {
         BasketItem basketItem = new BasketItem();
         basketItem.setId(basketItemResponse.getId());
-        basketItem.setName(basketItem.getName());
-        basketItem.setDescription(basketItem.getDescription());
+        basketItem.setName(basketItemResponse.getName());
+        basketItem.setDescription(basketItemResponse.getDescription());
         basketItem.setPrice(basketItemResponse.getPrice());
         basketItem.setPictureUrl(basketItemResponse.getPictureUrl());
-        basketItem.setProductBrand(basketItem.getProductBrand());
-        basketItem.setQuantity(basketItem.getQuantity());
-        basketItem.setProductType(basketItem.getProductType());
+        basketItem.setProductBrand(basketItemResponse.getProductBrand());
+        basketItem.setQuantity(basketItemResponse.getQuantity());
+        basketItem.setProductType(basketItemResponse.getProductType());
         return basketItem;
     }
 }
