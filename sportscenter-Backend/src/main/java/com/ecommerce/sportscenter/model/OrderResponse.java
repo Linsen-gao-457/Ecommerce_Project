@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderResponse {
     private Integer id;
-    private Integer basketId;
+    private String basketId;
     private ShippingAddress shippingAddress;
     private Double subTotal;
     private Double deliveryFee;

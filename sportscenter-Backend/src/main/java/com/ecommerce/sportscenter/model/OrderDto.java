@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class OrderDto {
-    private Integer basketId;
+    private String basketId;
     private ShippingAddress shippingAddress;
     private Double subTotal;
     private Double deliveryFee;

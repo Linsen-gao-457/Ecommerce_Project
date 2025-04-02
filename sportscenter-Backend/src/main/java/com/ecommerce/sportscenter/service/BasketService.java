@@ -8,9 +8,9 @@ import java.util.List;
 public interface BasketService {
     List<BasketResponse> getAllBasket();
 
-    BasketResponse getBasketById(Integer id);
+    BasketResponse getBasketById(String id);
 
-    void deleteBasketById(Integer id);
+    void deleteBasketById(String id);
 
     BasketResponse addBasket(Basket basket);
 }

@@ -27,15 +27,12 @@ public class BasketController {
 
     @GetMapping("/{basketId}")
     public BasketResponse getBasket(@PathVariable String basketId) {
-        Integer id = Integer.parseInt(basketId);
-        System.out.println(basketService.getBasketById(id));
-        return basketService.getBasketById(id);
+        return basketService.getBasketById(basketId);
     }
 
     @DeleteMapping("/{basketId}")
     public void deleteBasket(@PathVariable String basketId) {
-        Integer id = Integer.parseInt(basketId);
-        basketService.deleteBasketById(id);
+        basketService.deleteBasketById(basketId);
     }
 
     @PostMapping

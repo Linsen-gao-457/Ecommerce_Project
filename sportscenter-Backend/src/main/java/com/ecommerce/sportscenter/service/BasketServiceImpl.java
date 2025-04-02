@@ -56,7 +56,7 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public BasketResponse getBasketById(Integer id) {
+    public BasketResponse getBasketById(String id) {
         Optional<Basket> basketOptional = basketRepository.findById(id);
         if (basketOptional.isPresent()) {
             Basket basket = basketOptional.get();
@@ -66,9 +66,8 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public void deleteBasketById(Integer id) {
+    public void deleteBasketById(String id) {
         basketRepository.deleteById(id);
-
     }
 
     @Override

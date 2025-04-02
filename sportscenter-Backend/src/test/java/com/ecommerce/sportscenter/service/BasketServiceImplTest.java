@@ -57,24 +57,24 @@ class BasketServiceImplTest {
         basket1.setId("1"); // Using String ID
         basket1.setItems(Arrays.asList(new BasketItem())); // Add some items to the basket
 
-        when(basketRepository.findById(1)).thenReturn(Optional.of(basket1));
+        when(basketRepository.findById("1")).thenReturn(Optional.of(basket1));
 
-        BasketResponse basketResponse = basketService.getBasketById(1);
+        BasketResponse basketResponse = basketService.getBasketById("1");
 
         assertNotNull(basketResponse);
         assertEquals("1", basketResponse.getId()); // Assert String ID
-        verify(basketRepository, times(1)).findById(1); // Verify if the repository method was called once
+        verify(basketRepository, times(1)).findById("1"); // Verify if the repository method was called once
     }
 
     @Test
     void testGetBasketByIdWhenNotFound() {
         // Test for getBasketById() when basket is not found
-        when(basketRepository.findById(1)).thenReturn(Optional.empty());
+        when(basketRepository.findById("1")).thenReturn(Optional.empty());
 
-        BasketResponse basketResponseNotFound = basketService.getBasketById(1);
+        BasketResponse basketResponseNotFound = basketService.getBasketById("1");
 
         assertNull(basketResponseNotFound); // Expecting null when basket is not found
-        verify(basketRepository, times(1)).findById(1); // Verify if the repository method was called once
+        verify(basketRepository, times(1)).findById("1"); // Verify if the repository method was called once
     }
 
     @Test

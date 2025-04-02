@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository  extends JpaRepository<Order, Integer>{
-    List<Order> findByBasketId(Integer basketId);
+    List<Order> findByBasketId(String basketId);
     List<Order> findByOrderStatus(OrderStatus orderStatus);
     List<Order> findByOrderDateBetween(LocalDate starDate, LocalDate endDate);
     @Query("SELECT o FROM Order o JOIN o.orderItems oi WHERE oi.itemOrdered.name LIKE %:productName%")

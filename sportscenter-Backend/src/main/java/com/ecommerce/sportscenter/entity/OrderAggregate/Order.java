@@ -21,7 +21,7 @@ public class Order {
     @Column(name="Id")
     private Integer id;
     @Column(name="Basket_Id")
-    private Integer basketId;
+    private String basketId;
     @Embedded
     private ShippingAddress shippingAddress;
     @Column(name="Order_Date")

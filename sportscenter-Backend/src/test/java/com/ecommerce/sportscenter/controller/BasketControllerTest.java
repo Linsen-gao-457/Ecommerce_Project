@@ -51,7 +51,7 @@ class BasketControllerTest {
     @Test
     void testGetBasketById() throws Exception {
         BasketResponse basketResponse = new BasketResponse("1", new ArrayList<>());
-        when(basketService.getBasketById(1)).thenReturn(basketResponse);
+        when(basketService.getBasketById("1")).thenReturn(basketResponse);
 
         mockMvc.perform(get("/api/baskets/1"))
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class BasketControllerTest {
 
     @Test
     void testGetBasketById_NotFound() throws Exception {
-        when(basketService.getBasketById(1)).thenReturn(null);
+        when(basketService.getBasketById("1")).thenReturn(null);
 
         mockMvc.perform(get("/api/baskets/1"))
                 .andExpect(status().isOk());
@@ -81,7 +81,7 @@ class BasketControllerTest {
 
     @Test
     void testDeleteBasket() throws Exception {
-        doNothing().when(basketService).deleteBasketById(1);
+        doNothing().when(basketService).deleteBasketById("1");
 
         mockMvc.perform(delete("/api/baskets/1"))
                 .andExpect(status().isOk());
