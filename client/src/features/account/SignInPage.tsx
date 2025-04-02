@@ -21,15 +21,13 @@ export default function SignInPage(){
         //dispatching the sign in action
         await dispatch(signInUser(data));
         //check if the user is logged in
-        const {user} = store.getState().account
+        const {user} = store.getState().account;
         if(user){
           //navigate it to store page
           navigate(location.state?.from || '/store');
         }else{
           toast.error('Sign in Failed. Please try again');
-        }       
-        console.log(data)
-         
+        }        
       }catch(error){
         console.log('Error signing in:', error);
         toast.error('Sign in Failed. Please try again');

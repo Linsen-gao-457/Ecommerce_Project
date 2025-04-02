@@ -1,29 +1,18 @@
-import { useState, useEffect, ChangeEvent, SetStateAction } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { Product } from "../../app/models/product";
 import ProductList from "./ProductList";
 import agent from "../../app/api/agent";
 import Spinner from "../../app/layout/Spinner";
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Pagination,
-  Paper,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, FormControl, FormControlLabel, FormLabel, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { Brand } from "../../app/models/brand";
 import { Type } from "../../app/models/type";
 
-const sortOptions = [
-  { value: "asc", label: "Ascending" },
-  { value: "desc", label: "Descending" },
-];
-export default function Catalog() {
+
+const sortOptions =[
+  {value: "asc", label:"Ascending"},
+  {value: "desc", label:"Descending"}
+]
+export default function Catalog(){
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -33,7 +22,7 @@ export default function Catalog() {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedBrandId, setSelectedBrandId] = useState(0);
   const [selectedTypeId, setSelectedTypeId] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [totalItems, setTotaItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
@@ -44,135 +33,119 @@ export default function Catalog() {
   //   .catch(error=>console.log(error))
   //   .finally(()=>setLoading(false));
   // }, []);
-  useEffect(() => {
+  useEffect(()=>{
     Promise.all([
       agent.Store.list(currentPage, pageSize),
       agent.Store.brands(),
-      agent.Store.types(),
-    ])
-      .then(([productsRes, brandsResp, typesResp]) => {
-        setProducts(productsRes.content);
-        setTotaItems(productsRes.totalElements);
-        setBrands(brandsResp);
-        setTypes(typesResp);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+      agent.Store.types()
+    ]).then(([productsRes, brandsResp, typesResp])=>{
+      setProducts(productsRes.content);
+      setTotaItems(productsRes.totalElements);
+      setBrands(brandsResp);
+      setTypes(typesResp);
+    })
+    .catch((error)=>console.error(error))
+    .finally(()=>setLoading(false));
   }, [currentPage, pageSize]);
-  const loadProducts = (selectedSort: string, searchKeyword = "") => {
+  const loadProducts = (selectedSort, searchKeyword='') =>{
     setLoading(true);
-    let page = currentPage - 1;
+    let page = currentPage -1;
     let size = pageSize;
-    let brandId = selectedBrandId !== 0 ? selectedBrandId : undefined;
-    let typeId = selectedTypeId !== 0 ? selectedTypeId : undefined;
+    let brandId = selectedBrandId !==0 ? selectedBrandId : undefined;
+    let typeId = selectedTypeId !==0 ? selectedTypeId : undefined;
     const sort = "name";
-    const order = selectedSort === "desc" ? "desc" : "asc";
-    console.log("Loading products with:", {
-      page,
-      size,
-      brandId,
-      typeId,
-      sort,
-      order,
-      searchKeyword,
-    });
+    const order = selectedSort === "desc" ? "desc" : "asc"; 
     //construct the url
     let url = `${agent.Store.apiUrl}?sort=${sort}&order=${order}`;
-    if (brandId !== undefined || typeId !== undefined) {
-      url += "&";
-      if (brandId !== undefined) url += `brandId=${brandId}&`;
-      if (typeId !== undefined) url += `typeId=${typeId}&`;
+    if(brandId !== undefined || typeId !== undefined){
+      url+='&';
+      if(brandId!== undefined) url += `brandId=${brandId}&`;
+      if(typeId!== undefined) url += `typeId=${typeId}&`;
       //Remove trailing &
       url = url.replace(/&$/, "");
     }
     //Make the API request with the url
-    if (searchKeyword) {
+    if(searchKeyword){
       console.log(searchKeyword);
       agent.Store.search(searchKeyword)
-        .then((productsRes) => {
+        .then((productsRes)=>{
           setProducts(productsRes.content);
           setTotaItems(productsRes.length);
         })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
-    } else {
+        .catch((error)=>console.error(error))
+        .finally(()=> setLoading(false));
+    }else{
       agent.Store.list(page, size, undefined, undefined, url)
-        .then((productsRes) => {
+        .then((productsRes)=>{
           setProducts(productsRes.content);
           setTotaItems(productsRes.totalElements);
         })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .catch((error)=>console.error(error))
+        .finally(()=> setLoading(false));
     }
-  };
+  }
   //Trigger loadProducts wheneever selectedBrandId or selectedTypeId changes
-  useEffect(() => {
+  useEffect(()=>{
     loadProducts(selectedSort);
   }, [selectedBrandId, selectedTypeId]);
-
-  const handleSortChange = (event: any) => {
+  
+  const handleSortChange = (event: any) =>{
     const selectedSort = event.target.value;
-    setSelectedSort(selectedSort);
+    setSelectedSort(selectedSort); 
     loadProducts(selectedSort);
   };
 
-  const handleBrandChange = (event: any) => {
+  const handleBrandChange = (event: any) =>{
     const selectedBrand = event.target.value;
-    const brand = brands.find((b) => b.name === selectedBrand);
-    setSelectedBrand(selectedBrand);
-    if (brand) {
-      setSelectedBrandId(brand.id);
+    const brand = brands.find((b)=>b.name === selectedBrand);
+    setSelectedBrand(selectedBrand)
+    if(brand){
+      setSelectedBrandId(brand.id); 
       loadProducts(selectedSort);
-    }
+    }    
   };
 
-  const handleTypeChange = (event: any) => {
+  const handleTypeChange = (event: any) =>{
     const selectedType = event.target.value;
-    const type = types.find((t) => t.name === selectedType);
-    setSelectedType(selectedType);
-    if (type) {
-      setSelectedTypeId(type.id);
+    const type = types.find((t)=>t.name === selectedType);
+    setSelectedType(selectedType)
+    if(type){
+      setSelectedTypeId(type.id); 
       loadProducts(selectedSort);
-    }
+    }    
   };
-  const handlePageChange = (event: any, page: SetStateAction<number>) => {
+  const handlePageChange = (event, page) =>{
     setCurrentPage(page);
-  };
-  if (!products) return <h3>Unable to load Products</h3>;
-  if (loading) return <Spinner message="Loading Products..." />;
+  }
+  if(!products) return <h3>Unable to load Products</h3>
+  if(loading) return <Spinner message='Loading Products...'/>
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
         <Box mb={2} textAlign="center">
           <Typography variant="subtitle1">
-            Displaying {(currentPage - 1) * pageSize + 1}-
-            {Math.min(currentPage * pageSize, totalItems)} of {totalItems} items
+            Displaying {(currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalItems)} of {totalItems} items
           </Typography>
         </Box>
         <Box mt={4} display="flex" justifyContent="center">
-          <Pagination
-            count={Math.ceil(totalItems / pageSize)}
-            color="primary"
-            onChange={handlePageChange}
-            page={currentPage}
-          />
+          <Pagination count={Math.ceil(totalItems / pageSize)} color="primary" onChange={handlePageChange} page={currentPage} />
         </Box>
       </Grid>
       <Grid item xs={3}>
-        <Paper sx={{ mb: 2 }}>
-          <TextField
-            label="Search products"
-            variant="outlined"
-            fullWidth
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                // Trigger search action
-                loadProducts(selectedSort, searchTerm); // Pass the search term to loadProducts
-              }
-            }}
-          />
+        <Paper sx={{mb:2}}>
+        <TextField 
+          label="Search products" 
+          variant="outlined" 
+          fullWidth 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              // Trigger search action
+             loadProducts(selectedSort, searchTerm); // Pass the search term to loadProducts
+            }
+          }}
+        />
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
           <FormControl>
@@ -236,18 +209,13 @@ export default function Catalog() {
         </Paper>
       </Grid>
       <Grid item xs={9}>
-        <ProductList products={products} />
+        <ProductList products={products}/>
       </Grid>
       <Grid item xs={12}>
         <Box mt={4} display="flex" justifyContent="center">
-          <Pagination
-            count={Math.ceil(totalItems / pageSize)}
-            color="primary"
-            onChange={handlePageChange}
-            page={currentPage}
-          />
+          <Pagination count={Math.ceil(totalItems / pageSize)} color="primary" onChange={handlePageChange} page={currentPage} />
         </Box>
       </Grid>
     </Grid>
-  );
+  )
 }

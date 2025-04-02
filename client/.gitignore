@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-
-# 忽略 node_modules 目录
-node_modules/
