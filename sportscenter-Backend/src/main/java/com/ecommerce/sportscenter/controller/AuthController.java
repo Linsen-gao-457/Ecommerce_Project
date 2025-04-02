@@ -33,7 +33,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request){//from RequestBody fectch json and convert it to jwtRequest
-        this.authenticate(request.getUsername(), request.getPassword()); // verify username and password
+        try{
+            this.authenticate(request.getUsername(), request.getPassword()); // verify username and password
+        }
+        catch(BadCredentialsException ex){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //if don't handle BadCredentialsException, will return 500 internal error
+        }
         UserDetails userDetail = userDetailsService.loadUserByUsername(request.username);
         String jwtAuthenticationToken = jwtHelper.generateToken(userDetail);
         JwtResponse jwtResponse = JwtResponse.builder()
@@ -66,11 +71,6 @@ public class AuthController {
     // verify username and password by AuthenticaitonMangaer(managed by Spring)
     private void authenticate(String username, String password){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        try{
-            authenticationManager.authenticate(authenticationToken);
-        }
-        catch(BadCredentialsException ex){
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        authenticationManager.authenticate(authenticationToken);
     }
 }
