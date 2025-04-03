@@ -24,7 +24,6 @@ Install umi-material(watch 53)
 
 `npm i axios`
 
-Watch front-end how to initialize idea and docker
 
 `npm i react-toastify`
 
